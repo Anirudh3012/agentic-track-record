@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>What I Can Do</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#f2f4f8; --panel:#ffffff; --ink:#0a1020; --ink-2:#39435c; --ink-3:#6b7690; --rule:#d3d9e6;
+  --accent:#2b4bff; --accent-2:#1a33d1; --accent-soft:#e3e8ff; --signal:#ff5b1f; --signal-soft:#ffe8de; --sig-ink:#b23a0c;
+  --good:#0f9d58; --good-soft:#dff5e8; --good-ink:#0b6b3c;
+  --font-display:"Unbounded","Arial Black",Arial,sans-serif;
+  --font-body:"Geist","Helvetica Neue",Arial,sans-serif;
+  --font-mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--paper);color:var(--ink);font:400 21px/1.42 var(--font-body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(to right,rgba(10,16,32,.05) 1px,transparent 1px),linear-gradient(to bottom,rgba(10,16,32,.05) 1px,transparent 1px);background-size:56px 56px}
+#stage{position:absolute;left:50%;top:calc(50% - 18px);width:1280px;height:720px;transform-origin:center center;background:var(--paper);box-shadow:0 0 0 1px var(--ink),12px 12px 0 var(--ink);overflow:hidden}
+.slide{position:absolute;inset:0;padding:40px 56px 48px;display:none;flex-direction:column;gap:14px}
+.slide.on{display:flex}
+h1,h2,h3{font-family:var(--font-display);font-weight:500;font-style:normal;margin:0;letter-spacing:-.04em;text-wrap:balance}
+h1{font-size:74px;line-height:1.03;max-width:16ch}
+h2{font-size:31px;line-height:1.1;max-width:none}
+h3{font-size:22px;line-height:1.15;letter-spacing:-.03em}
+p{margin:0}
+.kick{font:500 14px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.kick::before{content:"";width:12px;height:12px;background:var(--accent);flex:none}
+.kick b{background:var(--ink);color:var(--paper);padding:4px 9px;font-weight:500;letter-spacing:.04em;text-transform:none}
+.kick .st{background:var(--signal-soft);color:var(--sig-ink);border:1px solid var(--signal)}
+.lede{font-size:25px;color:var(--ink-2);max-width:36ch;line-height:1.35}
+.tag{display:inline-block;font:500 13px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;padding:6px 9px;border:1px solid}
+.tag.biz{color:var(--sig-ink);background:var(--signal-soft);border-color:var(--signal)}
+.tag.ai{color:var(--accent-2);background:var(--accent-soft);border-color:var(--accent)}
+.tag.core{color:var(--good-ink);background:var(--good-soft);border-color:var(--good)}
+.tag.st{color:var(--paper);background:var(--ink);border-color:var(--ink);text-transform:none;letter-spacing:.02em}
+.row{display:flex;gap:16px}
+.grid{display:grid;gap:16px}
+.card{background:var(--panel);border:1px solid var(--ink);padding:18px 22px;display:grid;gap:9px;align-content:start;min-width:0}
+.card.biz{border-top:7px solid var(--signal)}.card.ai{border-top:7px solid var(--accent)}.card.core{border-top:7px solid var(--good)}
+.card p{font-size:18px;color:var(--ink-2);line-height:1.35}
+.card li{position:relative;padding-left:20px;font-size:19px;color:var(--ink-2);line-height:1.35;list-style:none}
+.card ul{margin:0;padding:0;display:grid;gap:8px}
+.card li::before{content:"";position:absolute;left:0;top:.5em;width:9px;height:9px;background:var(--accent)}
+.card li b{color:var(--ink);font-weight:600}
+.sub{font:500 14px var(--font-mono);color:var(--ink-3);letter-spacing:.02em}
+.stat{border-top:4px solid var(--ink);padding-top:10px;display:grid;gap:4px;align-content:start}
+.stat b{font:500 42px/1 var(--font-display);letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+.stat span{font-size:17px;color:var(--ink-2);line-height:1.3}
+.stat .was{font:500 13px var(--font-mono);background:var(--signal-soft);color:var(--sig-ink);padding:3px 8px;justify-self:start}
+.res{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.mini{border:1px solid var(--ink);background:var(--panel);padding:6px 14px;display:grid;gap:1px;align-content:start}
+.mini b{font:500 24px/1.1 var(--font-display);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.mini span{font-size:15px;color:var(--ink-2);line-height:1.25}
+.rail{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rail>div{border:1px solid var(--ink);background:var(--panel);padding:6px 14px;font-size:15.5px;line-height:1.35;color:var(--ink-2)}
+.rail>div b{display:block;font:500 12px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sig-ink);margin-bottom:2px}
+.rail>div.b2 b{color:var(--accent-2)}
+.rail>div.r1{border-left:6px solid var(--signal)}.rail>div.b2{border-left:6px solid var(--accent)}
+.dgs{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:var(--panel);border:1px solid var(--ink);box-shadow:6px 6px 0 var(--ink);background-image:radial-gradient(rgba(10,16,32,.12) 1px,transparent 1px);background-size:18px 18px;padding:4px 8px;position:relative}
+.dgs svg{display:block;width:100%;height:100%}
+.legend{display:flex;gap:16px;font:500 12px var(--font-mono);color:var(--ink-3);flex-wrap:wrap;position:absolute;left:12px;bottom:6px;background:color-mix(in oklab,var(--panel) 88%,transparent);padding:2px 8px}
+.legend i{display:inline-block;width:22px;border-top:2px solid var(--ink);vertical-align:middle;margin-right:6px}
+.legend i.f{border-top:2px dashed var(--signal)}.legend i.lp{border-top:2px dotted var(--accent)}
+.dg text{font-family:var(--font-mono)}
+.dg .nd rect{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}
+.dg .t1{font-weight:600;font-size:12px;fill:var(--ink)}.dg .t2{font-size:10.5px;fill:var(--ink-3)}
+.dg .k-llm rect{fill:var(--accent-soft);stroke:var(--accent)}.dg .k-llm .t1{fill:var(--accent-2)}.dg .k-llm .t2{fill:var(--accent)}
+.dg .k-human rect{fill:var(--signal-soft);stroke:var(--signal)}.dg .k-human .t1,.dg .k-human .t2{fill:var(--sig-ink)}
+.dg .k-store rect{fill:#eaeef7}
+.dg .k-queue rect{fill:var(--ink);stroke:var(--ink)}.dg .k-queue .t1{fill:var(--paper)}.dg .k-queue .t2{fill:#b8c1d8}
+.dg .k-dlq rect{fill:var(--signal);stroke:var(--ink)}.dg .k-dlq .t1{fill:#fff}.dg .k-dlq .t2{fill:#ffe8de}
+.dg .k-ext rect{fill:none;stroke:var(--ink-3);stroke-dasharray:5 4}
+.dg .k-safe rect{fill:var(--panel);stroke:var(--signal);stroke-dasharray:5 3}.dg .k-safe .t1{fill:var(--sig-ink)}
+.dg .nd{transition:opacity .25s}.dg .nd:hover rect{stroke-width:2.4}
+.dg .ed{transition:opacity .25s}.dg .ed path{fill:none;stroke-linejoin:round}
+.dg .e-flow path{stroke:var(--ink);stroke-width:1.8}
+.dg .e-fail path{stroke:var(--signal);stroke-width:1.8;stroke-dasharray:6 4}
+.dg .e-loop path{stroke:var(--accent);stroke-width:1.8;stroke-dasharray:2 4}
+.dg .e-async path{stroke:var(--ink-3);stroke-width:1.3;stroke-dasharray:1 5}
+.dg .mk-flow{fill:var(--ink)}.dg .mk-fail{fill:var(--signal)}.dg .mk-loop{fill:var(--accent)}.dg .mk-async{fill:var(--ink-3)}
+.dg .el{font:500 10.5px var(--font-mono);fill:var(--ink-2);paint-order:stroke;stroke:var(--panel);stroke-width:5px;stroke-linejoin:round}
+.dg .e-fail .el{fill:var(--sig-ink)}.dg .e-loop .el{fill:var(--accent-2)}
+.dg.hl .ed:not(.on){opacity:.1}.dg.hl .nd:not(.on){opacity:.28}
+.dg .pkt{fill:var(--ink);stroke:var(--panel);stroke-width:1}.dg .pkt.k-fail{fill:var(--signal)}.dg .pkt.k-loop{fill:var(--accent)}
+table{border-collapse:collapse;width:100%;font-size:17px;background:var(--panel);border:1px solid var(--ink)}
+th,td{text-align:left;padding:8px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:500 13px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--paper);border-bottom:0}
+td:first-child{font-weight:600;color:var(--ink)}td{color:var(--ink-2)}
+.tiles{display:grid;gap:14px}
+.tile{background:var(--panel);border:1px solid var(--ink);padding:14px 18px;display:grid;gap:5px;align-content:start;min-width:0}
+.tile h3{font-size:17px;letter-spacing:-.02em}
+.tile .use{font:500 14px var(--font-mono);color:var(--accent-2);line-height:1.4}
+.tile p{font-size:16px;color:var(--ink-2);line-height:1.3}
+.tile b.big{font:500 26px/1.1 var(--font-display);letter-spacing:-.045em;color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font:500 13.5px var(--font-mono);border:1px solid var(--ink);background:var(--paper);padding:4px 9px}
+.chips span.m{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-2)}
+.bars{display:grid;gap:12px}
+.br{display:grid;grid-template-columns:170px 1fr 70px;gap:12px;align-items:center;font-size:18px}
+.br .tr{height:30px;background:var(--paper);border:1px solid var(--ink);position:relative}
+.br .gb{position:absolute;inset:0 auto 0 0;background:repeating-linear-gradient(135deg,var(--accent) 0 8px,var(--accent-2) 8px 16px)}
+.br .gb.dim{background:repeating-linear-gradient(135deg,#aeb6c9 0 8px,#9aa3ba 8px 16px)}
+.br b{font:500 20px var(--font-mono);text-align:right;font-variant-numeric:tabular-nums}
+.meter{display:grid;gap:5px;border:1px solid var(--ink);background:var(--panel);padding:10px 14px}
+.meter .mh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.meter .mh span{font:500 14px var(--font-mono)}.meter .mh b{font:500 19px var(--font-display);color:var(--accent);letter-spacing:-.03em;white-space:nowrap}
+.mr{display:grid;grid-template-columns:44px 1fr 96px;gap:8px;align-items:center;font:500 12px var(--font-mono);color:var(--ink-3)}
+.mr em{font-style:normal;color:var(--ink);text-align:right}
+.mt{height:12px;background:var(--paper);border:1px solid var(--ink);position:relative}
+.mf{position:absolute;inset:0 auto 0 0;background:var(--accent)}.mf.dim{background:#aeb6c9}
+.pn{font:500 14px var(--font-mono);color:var(--ink-3)}
+#bar{position:fixed;left:0;right:0;bottom:0;height:34px;display:flex;align-items:center;gap:16px;padding:0 18px;font:500 12px var(--font-mono);color:var(--ink-3);background:color-mix(in oklab,var(--paper) 90%,transparent);border-top:1px solid var(--ink);z-index:20}
+#segs{display:flex;gap:3px;flex:1}
+#segs button{flex:1;height:8px;border:1px solid var(--ink);background:var(--panel);padding:0;cursor:pointer}
+#segs button.done{background:var(--ink)}#segs button.cur{background:var(--accent)}#segs button.arch{border-color:var(--signal);border-width:2px}
+#time{font-variant-numeric:tabular-nums;color:var(--ink)}#time.over{color:var(--signal)}
+#notes{position:fixed;left:50%;transform:translateX(-50%);bottom:46px;width:min(1000px,92vw);background:var(--ink);color:var(--paper);padding:14px 20px;font:400 17px/1.5 var(--font-body);z-index:30;display:none;box-shadow:6px 6px 0 var(--accent)}
+#notes.on{display:block}
+#notes b{font:500 12px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:#9db2ff;display:block;margin-bottom:4px}
+#help{position:fixed;top:12px;right:16px;font:500 12px var(--font-mono);color:var(--ink-3);z-index:20}
+@media print{#bar,#notes,#help{display:none}}
+</style>
+</head>
+<body>
+<div id="help">← → move · N notes · T timer · F full screen</div>
+<div id="stage">
+<section class="slide" data-note="Keep the first three slides to about ninety seconds. I build AI systems for regulated work and keep them running. In 2026 I rebuilt the AI backend of a GRC platform and consolidated a pentest engine into a product. This talk goes in a fixed order: the tools I know, the architectures I have run, the problems they threw at me, the evals and guardrails I built, and the business calls underneath.">
+  <div class="kick" data-a><b>2026</b>Engineering track record</div>
+  <div style="flex:1;display:grid;align-content:center;gap:24px">
+    <h1 data-a>Agent systems that <span style="color:var(--accent);border-bottom:6px solid var(--signal)">hold up</span> in production.</h1>
+    <p class="lede" data-a>Anirudh M. The tools, the architectures, the failures, the evals, and the business problem under each.</p>
+    <div class="row" data-a><span class="tag ai">AI engineering</span><span class="tag core">Core engineering</span><span class="tag biz">Business decisions</span></div>
+  </div>
+  <div class="res" data-a>
+    <div class="mini"><b data-to="8">8</b><span>systems, two products</span></div>
+    <div class="mini"><b data-to="11">11</b><span>client audits in July</span></div>
+    <div class="mini"><b data-to="13688" data-pre="−">−13,688</b><span>net lines deleted, tests green</span></div>
+    <div class="mini"><b>0.506 to 0.862</b><span>blind-judged F1</span></div>
+  </div>
+</section>
+<section class="slide" data-note="Set the frame. Five acts in a fixed order. Act two, architectures, is the centrepiece and gets eight slides. Every architecture slide opens with the business pain and ends with the numbers, so the business problem is intertwined rather than a separate section at the end.">
+  <div class="kick" data-a>The story</div>
+  <h2 data-a>Five acts. The architectures are the centrepiece.</h2>
+  <div class="grid" style="grid-template-columns:repeat(5,1fr);flex:1;align-content:stretch" data-a><div class="card" style=""><span class="pn">1 · slides 3 to 4</span><h3>Tools</h3><p>What I am fluent in</p></div><div class="card ai" style="border-top:7px solid var(--signal);background:var(--signal-soft)"><span class="pn">2 · slides 5 to 12</span><h3>Architectures</h3><p>The centrepiece. Six systems drawn as graphs, with their failure paths</p></div><div class="card" style=""><span class="pn">3 · slides 13 to 14</span><h3>Problems</h3><p>Outages, data and cost, with numbers</p></div><div class="card" style=""><span class="pn">4 · slides 15 to 16</span><h3>Evals and guardrails</h3><p>How I know it works and stop it doing harm</p></div><div class="card" style=""><span class="pn">5 · slides 17 to 20</span><h3>Business calls</h3><p>Decisions, outcomes, honest status</p></div></div>
+  <div class="rail" data-a><div class="r1"><b>Thread through all five</b>Every system replaces a step where a qualified person reads a lot and decides something.</div><div class="b2"><b>What you can expect</b>Real numbers, the failure paths, and what is still unfinished.</div></div>
+</section>
+<section class="slide" data-note="Act one, tools. First the AI and agent layer. Models tiered by stage and quota. Strands for agent pipelines. Three harnesses. Retrieval and document parsing, with the parser choice worth twenty hours. And MCP with deferred tools, which took a prompt from three hundred thousand tokens to eight hundred.">
+  <div class="kick" data-a><b>Act 1 · Tools</b>AI and agent layer</div>
+  <h2 data-a>The tools I reach for to build agents.</h2>
+  <div class="tiles" style="grid-template-columns:repeat(3,1fr);flex:1;align-content:stretch" data-a>
+    <div class="tile"><h3>Models</h3><div class="chips"><span class="m">Claude Opus</span><span class="m">Claude Sonnet</span><span class="m">Claude Haiku</span><span class="">GLM-5</span><span class="">gpt-oss-120b</span><span class="">qwen3-coder-30b</span></div><div class="use">tiered by stage and by daily quota</div></div>
+    <div class="tile"><h3>Agent SDK</h3><div class="chips"><span class="m">Strands</span><span class="">tools</span><span class="">hooks</span><span class="">plugins</span><span class="">structured output</span></div><div class="use">5-agent pipelines and read, grep, submit loops</div></div>
+    <div class="tile"><h3>Harnesses</h3><div class="chips"><span class="m">OpenCode</span><span class="">Claude Code</span><span class="">Codex CLI</span><span class="">Cursor</span></div><div class="use">pentest runtime, and multi-model adversarial review</div></div>
+    <div class="tile"><h3>Retrieval</h3><div class="chips"><span class="">Cohere Embed v4</span><span class="">Rerank 3.5</span><span class="">Qdrant</span><span class="">Postgres FTS</span><span class="">SQLite FTS5</span></div><div class="use">findings retrieval, mail search at 1 ms</div></div>
+    <div class="tile"><h3>Documents</h3><div class="chips"><span class="">Textract</span><span class="">Docling</span><span class="">pymupdf</span><span class="">python-docx</span><span class="">openpyxl</span></div><div class="use">4,400 pages: ~20 h locally, ~35 min managed</div></div>
+    <div class="tile"><h3>Protocols and tracing</h3><div class="chips"><span class="">MCP</span><span class="">Context7</span><span class="">deferred tools</span><span class="">Langfuse</span><span class="">Phoenix</span></div><div class="use">prompt tokens 311,493 to 829</div></div>
+  </div>
+</section>
+<section class="slide" data-note="Still act one. The core layer, because agents fail at the plumbing. Kafka and Redpanda. Postgres with three migration tools. FastAPI and Spring Boot. Kubernetes and systemd. Cloud, including a quota diagnosis. And my workflow: three harnesses, subagent fan-out, and adversarial review across model families.">
+  <div class="kick" data-a><b>Act 1 · Tools</b>Core, platform and workflow</div>
+  <h2 data-a>The plumbing agents live or die on.</h2>
+  <div class="tiles" style="grid-template-columns:repeat(3,1fr);flex:1;align-content:stretch" data-a>
+    <div class="tile"><h3>Messaging</h3><div class="chips"><span class="m">Kafka</span><span class="m">Redpanda</span><span class="">aiokafka</span><span class="">kafka-python</span></div><div class="use">outbox, inbox, DLQs, manual commit</div></div>
+    <div class="tile"><h3>Data</h3><div class="chips"><span class="m">Postgres 16</span><span class="">SQLAlchemy 2</span><span class="">Alembic</span><span class="">Flyway</span><span class="">asyncpg</span><span class="">SQLite</span></div><div class="use">leases, JSONB, migrations, N+1 fixes</div></div>
+    <div class="tile"><h3>Services</h3><div class="chips"><span class="m">FastAPI</span><span class="">Pydantic v2</span><span class="m">Spring Boot 4</span><span class="">Java 21</span><span class="">Keycloak</span></div><div class="use">multi-tenant by realm, service contracts</div></div>
+    <div class="tile"><h3>Delivery</h3><div class="chips"><span class="">Docker</span><span class="">CI to registry</span><span class="">Kubernetes</span><span class="">ArgoCD</span><span class="">Helm</span><span class="">systemd</span><span class="">nginx</span></div><div class="use">restart policies, readiness, config rollout</div></div>
+    <div class="tile"><h3>Cloud</h3><div class="chips"><span class="">AWS Bedrock</span><span class="">Organizations</span><span class="">S3</span><span class="">Textract</span><span class="">Azure Foundry</span></div><div class="use">quota diagnosis, residency-first migration plan</div></div>
+    <div class="tile"><h3>Workflow</h3><div class="chips"><span class="m">subagent fan-out</span><span class="">adversarial review</span><span class="">contracts first</span><span class="">Obsidian notes</span></div><div class="use">74 agents in a day, 4 built an engine in one</div></div>
+  </div>
+  <div class="rail" data-a><div class="r1"><b>Also comfortable in</b>React 19, MUI, Redux, Vite, Next.js, Electron, Remotion, whisper.cpp.</div><div class="b2"><b>Principles</b>Prove it runs. Root-cause first. Subtract before adding. Safe to run twice.</div></div>
+</section>
+<section class="slide" data-note="Act two starts here, and it is the centrepiece. This is the platform map. Six AI systems around a Java core. Each box carries the business pain it removes: an auditor&#x27;s week, thousands of files, 147 screenshots per vendor, hand-written scripts, analyst hours. Orange is a human. Dashed orange is the cost and quota layer I built across them.">
+  <div class="kick" data-a><b>Architecture 1 of 8</b>The platform map</div>
+  <h2 data-a>Six systems on one platform, each answering a business pain.</h2>
+  <div class="rail" data-a><div class="r1"><b>Business pain</b>Every system replaces a step where a qualified person reads a lot of material and decides something.</div><div class="b2"><b>What existed</b>A Java core, a React app per tenant, and AI workers on Kafka. I built and rebuilt the AI backends.</div></div>
+  <div class="dgs" data-a><div class="dg" data-d="map" style="width:100%;height:100%"></div>
+    <div class="legend"><span><i></i>happy path</span><span><i class="f"></i>failure path</span><span><i class="lp"></i>retry or feedback</span></div></div>
+  <div class="res" data-a><div class="mini"><b>6</b><span>AI systems, one Java core</span></div><div class="mini"><b>Kafka</b><span>between core and workers</span></div><div class="mini"><b>1 human</b><span>ratifies every verdict</span></div><div class="mini"><b>Bedrock</b><span>model traffic, one quota</span></div></div>
+</section>
+<section class="slide" data-note="Architecture one, the task generator. Read it left to right, top to bottom. A per-tenant gate holds controls until the batch is complete. A questioner asks humans once; unanswered questions take a stated default with a flag. Answers freeze into a decision record that every stage reads. Five agents run, and the reviewer names the failing agent, cap two cycles, then a human. Recovery loops resume crashed batches.">
+  <div class="kick" data-a><b>Architecture 2 of 8</b>Task generator<span class="st b">In production since Jul 22</span></div>
+  <h2 data-a>Gate, ask once, five agents, review loop.</h2>
+  <div class="rail" data-a><div class="r1"><b>Business pain</b>An auditor's week deciding how many tasks a control becomes. Too many is busywork, too few is a missed finding.</div><div class="b2"><b>What existed</b>Rule engines plus prompts. Accuracy sat near 60%, and identical inputs gave 6, then 17, then 6 tasks.</div></div>
+  <div class="dgs" data-a><div class="dg" data-d="tg" style="width:100%;height:100%"></div>
+    <div class="legend"><span><i></i>happy path</span><span><i class="f"></i>failure path</span><span><i class="lp"></i>retry or feedback</span></div></div>
+  <div class="res" data-a><div class="mini"><b data-from="1" data-to="5.5" data-dec="1" data-pre="" data-suf="×">5.5×</b><span>fewer tokens per control</span></div><div class="mini"><b>8m26s</b><span>15 controls to 71 tasks</span></div><div class="mini"><b>12 of 15</b><span>approved first pass</span></div><div class="mini"><b>0</b><span>throttles across 499 controls</span></div></div>
+</section>
+<section class="slide" data-note="Architecture two, the evidence mapper. Thirty consumers in one group, manual commit, one message in flight, so a crash redelivers. Transient errors are not committed; non-retriable ones go to the dead-letter topic. The agent is jailed to an immutable, content-hashed tenant mirror, must read before it claims, escalates once to a stronger model, and an AIMD pacer backs off on throttling. Findings run on a second cluster so a DLQ storm cannot spill over.">
+  <div class="kick" data-a><b>Architecture 3 of 8</b>Evidence mapper<span class="st b">Benchmarked, on a branch</span></div>
+  <h2 data-a>An agent that reads files, jailed and paced.</h2>
+  <div class="rail" data-a><div class="r1"><b>Business pain</b>The right evidence file among thousands. A false compliant claim is worse than an honest gap.</div><div class="b2"><b>What existed</b>Four engines behind a flag. The verifier saw only 500-character snippets, so the bench found 52 wrong claims.</div></div>
+  <div class="dgs" data-a><div class="dg" data-d="ev" style="width:100%;height:100%"></div>
+    <div class="legend"><span><i></i>happy path</span><span><i class="f"></i>failure path</span><span><i class="lp"></i>retry or feedback</span></div></div>
+  <div class="res" data-a><div class="mini"><b>0.506 to 0.862</b><span>blind-judged macro F1</span></div><div class="mini"><b>1 to 8</b><span>correct abstentions of 10</span></div><div class="mini"><b>~12×</b><span>latency accepted</span></div><div class="mini"><b>−1,927</b><span>lines with the old engine</span></div></div>
+</section>
+<section class="slide" data-note="Architecture three, vendor risk. The domain layer imports only the standard library, so scoring cannot call a model. State changes and events share a transaction through an outbox, then Kafka, six workers with inbox dedup, and a DLQ. Uploads return 202 and a Postgres table is the queue, with a 120 second lease. Parsing runs in a killable child. The AI service reads answer-blind, five guards and a verifier check every citation, and a human ratifies.">
+  <div class="kick" data-a><b>Architecture 4 of 8</b>Vendor-risk platform<span class="st b">Preprod</span></div>
+  <h2 data-a>Deterministic core, bounded agent, human ratifies.</h2>
+  <div class="rail" data-a><div class="r1"><b>Business pain</b>~50 PDFs and 147 screenshots per vendor across thousands of vendors, and every citation has to be real.</div><div class="b2"><b>What existed</b>A one-shot evaluator cited zero images across 12 questions and missed a certificate in the pack.</div></div>
+  <div class="dgs" data-a><div class="dg" data-d="vr" style="width:100%;height:100%"></div>
+    <div class="legend"><span><i></i>happy path</span><span><i class="f"></i>failure path</span><span><i class="lp"></i>retry or feedback</span></div></div>
+  <div class="res" data-a><div class="mini"><b>65% to 91%</b><span>golden pass, 0 hard fails</span></div><div class="mini"><b>517 to 11</b><span>queries per listing</span></div><div class="mini"><b>20 h to 35 min</b><span>parsing 4,400 pages</span></div><div class="mini"><b>10 of 12</b><span>questions cite screenshots</span></div></div>
+</section>
+<section class="slide" data-note="Architecture four, the script builder. It is the only service that runs model-written code against customer credentials, so nothing about checking is optional. A cache hit skips research. The research agent is budgeted and gated. Codegen has no tools. Validate, mocks-only tests, then execute with a nonce-checked result. Any failure enters one repair loop with a budget of two. Poison messages are committed past, and failures land on a results-failure topic.">
+  <div class="kick" data-a><b>Architecture 5 of 8</b>Script builder<span class="st b">Consolidation unmerged</span></div>
+  <h2 data-a>Two agents. Every gate lives in code.</h2>
+  <div class="rail" data-a><div class="r1"><b>Business pain</b>Hand-written collection scripts per client with no reuse, and failures silently fall back to weaker evidence.</div><div class="b2"><b>What existed</b>A May audit found 51 of 207 rows drifted from disk. One client batch failed 15 of 20.</div></div>
+  <div class="dgs" data-a><div class="dg" data-d="sb" style="width:100%;height:100%"></div>
+    <div class="legend"><span><i></i>happy path</span><span><i class="f"></i>failure path</span><span><i class="lp"></i>retry or feedback</span></div></div>
+  <div class="res" data-a><div class="mini"><b data-from="0" data-to="13688" data-dec="0" data-pre="−" data-suf="">−13,688</b><span>net lines, 475 tests green</span></div><div class="mini"><b>209</b><span>integrations in the library</span></div><div class="mini"><b>30.6 s</b><span>first live closed loop</span></div><div class="mini"><b>0</b><span>model calls on replay</span></div></div>
+</section>
+<section class="slide" data-note="Architecture five, the pentest platform. A frozen service API writes the job and the callback outbox in one transaction. A lease worker with fencing runs the engine: an orchestrator with nine read-only sub-agents, a hook that blocks ad hoc reads, a scope gate, and a validator that cannot mutate findings. Publication is compare-and-swap, so a stale worker loses. A lost callback falls back to polling, so no result is lost.">
+  <div class="kick" data-a><b>Architecture 6 of 8</b>Pentest platform<span class="st b">Lab results are local</span></div>
+  <h2 data-a>An agent finds. A portal manages.</h2>
+  <div class="rail" data-a><div class="r1"><b>Business pain</b>Analyst hours cap managed pentesting. An agent only helps if it is trustworthy enough to add capacity.</div><div class="b2"><b>What existed</b>The first agent caught ~32% of human findings and identical scans diverged. Two systems did not talk.</div></div>
+  <div class="dgs" data-a><div class="dg" data-d="pt" style="width:100%;height:100%"></div>
+    <div class="legend"><span><i></i>happy path</span><span><i class="f"></i>failure path</span><span><i class="lp"></i>retry or feedback</span></div></div>
+  <div class="res" data-a><div class="mini"><b>32% to 80%</b><span>recall gate vs human findings</span></div><div class="mini"><b>$0.4965</b><span>first live run, 20 turns</span></div><div class="mini"><b data-from="0" data-to="767" data-dec="0" data-pre="" data-suf="">767</b><span>engine tests green</span></div><div class="mini"><b>17 h</b><span>silent worker outage fixed</span></div></div>
+</section>
+<section class="slide" data-note="Architecture six is the pattern under all of them. Top row: a consumer with manual commit, idempotent handling, inbox dedup, retry by not committing, and a DLQ for the rest. Middle: an outbox so state and events share a transaction. Bottom: leases, heartbeats, compare-and-swap for publication, a supervised child with real limits, and a reaper for stuck runs. Each one exists because something broke.">
+  <div class="kick" data-a><b>Architecture 7 of 8</b>Shared patterns</div>
+  <h2 data-a>The patterns under every system.</h2>
+  <div class="rail" data-a><div class="r1"><b>Business pain</b>Tenants run unattended, so every failure needs a path that is safe to run twice.</div><div class="b2"><b>What existed</b>Rules I hold: commit after handling, ids not locks, outbox for events, limits that kill.</div></div>
+  <div class="dgs" data-a><div class="dg" data-d="pat" style="width:100%;height:100%"></div>
+    <div class="legend"><span><i></i>happy path</span><span><i class="f"></i>failure path</span><span><i class="lp"></i>retry or feedback</span></div></div>
+  <div class="res" data-a><div class="mini"><b>30 + 2</b><span>consumers, clusters (mapper)</span></div><div class="mini"><b>16 + 6</b><span>topics, workers (vendor-risk)</span></div><div class="mini"><b>120 s</b><span>leases with fencing tokens</span></div><div class="mini"><b>1,800 s</b><span>parser wall clock, then SIGKILL</span></div></div>
+</section>
+<section class="slide" data-note="The last architecture slide answers the question everyone asks. What happens when the model is wrong? A no-submit is nudged, then escalated once, or returned as an error, never a guess. The verifier needs a verbatim span or point-eight token overlap, else the answer is flagged unproven. Five guards run after the model. The reviewer names the failing check, cap two cycles, then a human. Everything read is on the audit trail.">
+  <div class="kick" data-a><b>Architecture 8 of 8</b>When the model is wrong</div>
+  <h2 data-a>The path from a bad answer to a human.</h2>
+  <div class="rail" data-a><div class="r1"><b>Business pain</b>In an audit a confident wrong answer is worse than no answer.</div><div class="b2"><b>What existed</b>The verifier must prove anything the model writes before we show it as proven. Nothing auto-approves.</div></div>
+  <div class="dgs" data-a><div class="dg" data-d="bad" style="width:100%;height:100%"></div>
+    <div class="legend"><span><i></i>happy path</span><span><i class="f"></i>failure path</span><span><i class="lp"></i>retry or feedback</span></div></div>
+  <div class="res" data-a><div class="mini"><b>97 cases</b><span>10 tiers in the golden set</span></div><div class="mini"><b>91%</b><span>pass, 0 hard fails</span></div><div class="mini"><b>cap 2</b><span>reviewer cycles, then a human</span></div><div class="mini"><b>0.8</b><span>token overlap floor for a citation</span></div></div>
+</section>
+<section class="slide" data-note="Act three, problems. Outages first. Six that I root-caused with numbers. A worker silently dead for seventeen hours. Load near three hundred. About two hundred twenty-six requests aged out of Kafka retention while lag read zero. Config that beats code. Pods that did not restart. Boot deadlocks. Each row ended as a rule, not a patch.">
+  <div class="kick" data-a><b>Act 3 · Problems</b>Outages</div>
+  <h2 data-a>Six outages, root-caused with numbers.</h2>
+  <div data-a><table>
+    <thead><tr><th>Outage</th><th>Impact</th><th>Root cause</th><th>Fix and rule</th></tr></thead>
+    <tbody>
+      <tr><td>Silent worker death</td><td>17 h, no alert</td><td>Worker lived in the web server lifespan</td><td>Own supervised process</td></tr>
+      <tr><td>Preprod box buried</td><td>Load ~295, ~10 min down</td><td>Parallel parsing beside the web tier</td><td>Killable child, RSS cap, concurrency 1</td></tr>
+      <tr><td>Worker service dead</td><td>4 to 6 days QA, ~226 requests lost</td><td>No restart policy. Auto-commit hid the lag</td><td>Restart policies, offset guard</td></tr>
+      <tr><td>Result topics collapsed</td><td>Success and failure in one topic</td><td>Prod YAML wrong, code right</td><td>Verify live. Config beats code</td></tr>
+      <tr><td>Pods not restarting</td><td>4 incidents in a week</td><td>Config map binds at pod start</td><td>Edit, restart, verify from data</td></tr>
+      <tr><td>Boot deadlocks</td><td>2 outages</td><td>Heavy DDL at start while serving</td><td>Advisory lock, DDL as a job</td></tr>
+    </tbody></table></div>
+  <div class="rail" data-a><div class="r1"><b>Business cost</b>QA and preprod tenants blocked, requests lost for good, and time spent proving the platform was safe.</div><div class="b2"><b>What I changed</b>Every outage ended in a rule in the runbook, not a one-off patch.</div></div>
+</section>
+<section class="slide" data-note="Still act three. Data and cost. Left: the database and messaging problems. Five hundred seventeen queries per page cut to eleven. A JSONB bug SQLite tests could not see. Ten duplicate deliveries from a naive restart. Right: cost and scale, before and after. Deferred tools, prompt caching, managed OCR, concurrency. And the quota gap between accounts, a zero point one five percent duty cycle.">
+  <div class="kick" data-a><b>Act 3 · Problems</b>Data, messaging, cost and scale</div>
+  <h2 data-a>Fixes measured before and after.</h2>
+  <div class="grid" style="grid-template-columns:1fr 1.15fr;flex:1;gap:18px">
+    <div class="grid" style="align-content:stretch" data-a>
+      <div class="card core" style="align-content:start"><h3>Data and messaging</h3><ul>
+        <li><b>517 to 11</b> queries per listing, from one paginated query and SQL aggregates</li>
+        <li>The <b>JSONB decode</b> bug came from scalars the driver had already decoded. SQLite tests could not see it</li>
+        <li><b>10 duplicate deliveries</b> after a restart. Now I trim against acknowledged lines first</li>
+        <li>A <b>lease and token</b> stop a slow parse from resurrecting a retried job</li></ul></div>
+    </div>
+    <div class="grid" style="align-content:start;gap:10px" data-a>
+      <div class="meter"><div class="mh"><span>Prompt tokens per request</span><b>≈376×</b></div><div class="mr"><i>before</i><div class="mt"><div class="mf dim" style="width:100%"></div></div><em>311,493</em></div><div class="mr"><i>after</i><div class="mt"><div class="mf" data-w="1.20" style="width:1.20%"></div></div><em>829</em></div></div>
+      <div class="meter"><div class="mh"><span>Cost per model call</span><b>≈6.8×</b></div><div class="mr"><i>before</i><div class="mt"><div class="mf dim" style="width:100%"></div></div><em>$0.048</em></div><div class="mr"><i>after</i><div class="mt"><div class="mf" data-w="14.80" style="width:14.80%"></div></div><em>$0.0071</em></div></div>
+      <div class="meter"><div class="mh"><span>Parse 4,400 pages</span><b>≈34×</b></div><div class="mr"><i>before</i><div class="mt"><div class="mf dim" style="width:100%"></div></div><em>≈20 h</em></div><div class="mr"><i>after</i><div class="mt"><div class="mf" data-w="2.90" style="width:2.90%"></div></div><em>≈35 min</em></div></div>
+      <div class="meter"><div class="mh"><span>200-question run</span><b>≈3.4×</b></div><div class="mr"><i>before</i><div class="mt"><div class="mf dim" style="width:100%"></div></div><em>≈2.8 h</em></div><div class="mr"><i>after</i><div class="mt"><div class="mf" data-w="29.20" style="width:29.20%"></div></div><em>49 min</em></div></div>
+      <div class="rail" style="margin-top:0"><div class="r1"><b>Quota gap</b>26 to 138× lower daily cap on one account</div><div class="b2"><b>Duty cycle</b>0.15% of a day at its own per-minute rate</div></div>
+    </div>
+  </div>
+</section>
+<section class="slide" data-note="Act four, evals and guardrails. Evals first. The blind bake-off: frozen outputs, randomised labels, ten fresh reviewers, sealed key. Then a golden set with integrity tests, failure baselines diffed against a clean worktree, a product lab under a hundred dollar ceiling with a spend ledger, and rubric scoring with a consistency sweep. Each one exists because an opinion was wrong once.">
+  <div class="kick" data-a><b>Act 4 · Evals</b>How I know it works</div>
+  <h2 data-a>Evals I built, because opinions were wrong.</h2>
+  <div class="grid" style="grid-template-columns:1.05fr 1fr;flex:1;gap:18px">
+    <div class="card" data-a style="align-content:start"><h3>The blind bake-off</h3><p class="sub">239 files · 50 tasks · sealed key · 10 fresh reviewers</p>
+      <div class="bars" style="margin-top:8px">
+        <div class="br"><span>Old retriever</span><div class="tr"><div class="gb dim" data-w="50.6"></div></div><b>0.506</b></div>
+        <div class="br"><span>Agentic, Sonnet</span><div class="tr"><div class="gb" data-w="81.4"></div></div><b>0.814</b></div>
+        <div class="br"><span>Agentic, Fable</span><div class="tr"><div class="gb" data-w="86.2"></div></div><b>0.862</b></div></div>
+      <p class="sub" style="margin-top:8px">Micro precision 0.597 to 0.97. Per-task record 24 to 5. It overturned my own view and two frontier reviewers'.</p></div>
+    <div class="grid" style="gap:12px;align-content:start" data-a>
+      <div class="card ai"><h3>Golden set with integrity tests</h3><p>97 cases, 10 tiers, semver plus AST digests, 30 integrity tests. <b>65% to 91%</b>, 0 hard fails.</p></div>
+      <div class="card ai"><h3>Failure baselines</h3><p>55 known failures captured as node ids, diffed against a clean worktree: <b>zero regressions</b> is a measured claim.</p></div>
+      <div class="card ai"><h3>Product lab under a ceiling</h3><p>$100 cap and a ledger checked before every call. Two AI candidates rejected: <b>11 of 12</b> against a baseline of 12.</p></div>
+      <div class="card ai"><h3>Rubric scoring with a sweep</h3><p>132 agents, two classifiers plus an adjudicator per batch, and <b>no split tiers</b> on identical text.</p></div>
+    </div>
+  </div>
+</section>
+<section class="slide" data-note="Guardrails. The rule is that they live in code and infrastructure, never only in a prompt. Read-before-claim and the path jail in the mapper. Import allowlist, AST checks and nonce results in the script builder. Scope gate and pre-tool hook in the pentest engine. The domain layer that cannot call a model. Server-derived capabilities, so a client flag cannot grant access. And a human ratifies.">
+  <div class="kick" data-a><b>Act 4 · Guardrails</b>In code, not in prompts</div>
+  <h2 data-a>Guardrails that a prompt cannot talk its way past.</h2>
+  <div data-a><table>
+    <thead><tr><th>Guardrail</th><th>Stops</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td>Read-before-claim</td><td>Claiming a file never opened</td><td>Evidence mapper</td></tr>
+      <tr><td>Path jail, fenced text, zero tools</td><td>Traversal and prompt injection</td><td>Mapper, mail client</td></tr>
+      <tr><td>AST, import allowlist, nonce result</td><td>Unsafe or falsely successful code</td><td>Script builder</td></tr>
+      <tr><td>Scope gate, pre-tool hook</td><td>Out-of-scope or irreproducible runs</td><td>Pentest platform</td></tr>
+      <tr><td>Citation verifier, five guards</td><td>Hallucinated or stale proof</td><td>Vendor-risk</td></tr>
+      <tr><td>Domain layer, stdlib only</td><td>A model touching scoring</td><td>Vendor-risk</td></tr>
+      <tr><td>Frozen schema, server capabilities</td><td>Contract drift, internal data leaking</td><td>Pentest platform</td></tr>
+      <tr><td>Human ratification, phase gates</td><td>Auto-approved findings</td><td>Vendor-risk, pentest</td></tr>
+    </tbody></table></div>
+  <div class="rail" data-a><div class="r1"><b>Why it matters commercially</b>An audit product is sold on trust. One invented citation costs more than any time saved.</div><div class="b2"><b>Checked, not assumed</b>Hostile message rated urgency 1. Customer claiming an admin role stayed a client.</div></div>
+</section>
+<section class="slide" data-note="Act five, business calls. This is the same story from the other side. Each row is a decision with a named cost. I deleted my own design. I reversed an architecture on a blind test and paid twelve times the latency. I tiered models by stage on measured cost. I made residency the gate for a cloud move, killed a hosted product on terms of service, decoupled a shared module, and rejected AI candidates that lost.">
+  <div class="kick" data-a><b>Act 5 · Business</b>Decisions with a named cost</div>
+  <h2 data-a>The calls I made, and what each cost.</h2>
+  <div data-a><table>
+    <thead><tr><th>Decision</th><th>Evidence</th><th>Cost I accepted</th></tr></thead>
+    <tbody>
+      <tr><td>Deleted my own gate design</td><td>Agentic route made it redundant</td><td>A finished design</td></tr>
+      <tr><td>Reversed to agentic mapping</td><td>Blind bench F1 0.506 to 0.862</td><td>~12× latency, 15 to 25× cost</td></tr>
+      <tr><td>Tiered models by stage</td><td>Opus $3.01 vs Sonnet $1.82 per 5 controls</td><td>One more reroute (3 vs 2)</td></tr>
+      <tr><td>Decoupled a shared module</td><td>One real caller, two disagreeing code sets</td><td>A second copy to maintain</td></tr>
+      <tr><td>Residency before a cloud move</td><td>Provider guarantees do not cover the new host</td><td>Migration work waits</td></tr>
+      <tr><td>Killed a hosted product</td><td>Terms bar routing users through subscription credentials</td><td>No SaaS, personal use only</td></tr>
+      <tr><td>Rejected two AI candidates</td><td>11 of 12 against a baseline of 12</td><td>Shipped deterministic advice</td></tr>
+    </tbody></table></div>
+</section>
+<section class="slide" data-note="The scoreboard, with status stated plainly. Task generator in production. Evidence mapper benchmarked, on a branch. Vendor risk in preprod. Script builder consolidation unmerged. Pentest platform lab only. Then the delivery line in daily use. I would rather you hear the status from me than find it in the repo.">
+  <div class="kick" data-a><b>Act 5 · Business</b>Outcomes and honest status</div>
+  <h2 data-a>Before to after, with status stated plainly.</h2>
+  <div class="tiles" style="grid-template-columns:repeat(3,1fr);flex:1;align-content:stretch" data-a>
+    <div class="tile"><h3>Task generator</h3><span class="tag st" style="justify-self:start">In production</span><b class="big">5.5× fewer tokens</b><p>15 controls to 71 tasks in 8m26s, 12 of 15 approved first pass</p></div>
+    <div class="tile"><h3>Evidence mapper</h3><span class="tag st" style="justify-self:start">Benchmarked, branch</span><b class="big">F1 0.506 to 0.862</b><p>abstentions 1 to 8 of 10, at ~12× latency</p></div>
+    <div class="tile"><h3>Vendor-risk platform</h3><span class="tag st" style="justify-self:start">Preprod</span><b class="big">65% to 91%</b><p>golden set, 0 hard fails, 517 to 11 queries</p></div>
+    <div class="tile"><h3>Script builder</h3><span class="tag st" style="justify-self:start">Consolidation unmerged</span><b class="big">−13,688 lines</b><p>475 tests green, 209 integrations, 30.6 s live check</p></div>
+    <div class="tile"><h3>Pentest platform</h3><span class="tag st" style="justify-self:start">Lab, not deployed</span><b class="big">32% to 80% gate</b><p>$0.4965 first live run, 767 tests, 17 h outage fixed</p></div>
+    <div class="tile"><h3>Audit delivery line</h3><span class="tag st" style="justify-self:start">In daily use</span><b class="big">366 in one day</b><p>11 client audits in July, cited evidence zips</p></div>
+  </div>
+</section>
+<section class="slide" data-note="An honest ledger. Left, what is unfinished: the mapper and script builder consolidation are unmerged, pentest results are a lab, telemetry is planned not built. Right, gaps I found myself and flagged: a no-match that hides abstentions, a pod that stays alive when its worker dies, partial extraction lowering recall silently, and generated-code isolation as the next hardening item.">
+  <div class="kick" data-a><b>Act 5 · Business</b>Honest ledger</div>
+  <h2 data-a>What is unfinished, and the gaps I found myself.</h2>
+  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1;gap:18px">
+    <div class="card biz" data-a><h3>Unfinished</h3><ul>
+      <li>Agentic evidence mapper is on a branch. Production main runs the older engines behind a flag</li>
+      <li>The one-engine script-builder consolidation has not merged</li>
+      <li>Pentest results are a lab run on local runtimes</li>
+      <li>Agentic vendor evaluator is off by default. 10 of 97 golden cases still fail</li>
+      <li>Telemetry and metering exist as plans only</li></ul></div>
+    <div class="card core" data-a><h3>Gaps I found and flagged</h3><ul>
+      <li><b>NO_MATCH</b> does not yet distinguish a correct abstention from a failure</li>
+      <li><b>Liveness</b> stays green when a worker thread dies. I saw it twice</li>
+      <li><b>Partial extraction</b> lowers recall silently. Nothing alerts on it yet</li>
+      <li><b>Generated-code isolation</b> is the next thing I would harden</li>
+      <li><b>Secrets rotation</b> lagged behind speed. Now tracked by type in a risk register</li></ul></div>
+  </div>
+</section>
+<section class="slide" data-note="Close. Range beyond the backends: an audit delivery line, a quota diagnosis, an internal assistant, a mail client built in a day, evidence scoring, and product films. I am happy to go deep on an outage post-mortem, DLQ and outbox design, a blind evaluation, or what I would harden next. Thank you.">
+  <div class="kick" data-a><b>Close</b>Range, and where I would go deep</div>
+  <h2 data-a>More I have built, and what to ask me.</h2>
+  <div class="tiles" style="grid-template-columns:repeat(3,1fr)" data-a>
+    <div class="tile"><h3>Internal assistant</h3><b class="big">311,493 to 829</b><p>prompt tokens after deferred tools</p></div>
+    <div class="tile"><h3>Cloud quota diagnosis</h3><b class="big">26 to 138×</b><p>daily-cap gap, 0.15% duty cycle</p></div>
+    <div class="tile"><h3>Hypermail</h3><b class="big">~24 h</b><p>local-first mail client, ~15k lines</p></div>
+    <div class="tile"><h3>Evidence scoring</h3><b class="big">72% vs 38%</b><p>lenient against strict. The gap was the finding</p></div>
+    <div class="tile"><h3>Voice sheet filler</h3><b class="big">no TTS, ever</b><p>whisper.cpp biased by client vocabulary</p></div>
+    <div class="tile"><h3>Product films</h3><b class="big">2:19 + 2:52</b><p>two Remotion films and a social cut</p></div>
+  </div>
+  <div class="card" data-a style="margin-top:auto;grid-template-columns:auto 1fr;align-items:center;gap:22px;padding:16px 24px;border-top:7px solid var(--accent)">
+    <span class="tag ai">Ask me about</span>
+    <p style="font-size:23px;color:var(--ink)">An outage post-mortem, DLQ and outbox design, a blind evaluation, or what I would harden next.</p>
+  </div>
+</section>
+</div>
+<div id="notes"><b>Speaker notes · ~30 s</b><span id="nt"></span></div>
+<div id="bar"><div id="segs"></div><span id="time">0:00 / 10:00</span><span id="cnt">1 / 20</span></div>
+<script type="application/json" id="dg-data">{"map":{"nodes":[{"id":"ui","t":"Web app","s":"one bundle per tenant","k":"ext","c":1,"r":0},{"id":"co","t":"Java core","s":"owns workflow","k":"ext","c":3,"r":0},{"id":"ev","t":"Evidence mapper","s":"pain: right file among|thousands of files","k":"llm","c":0,"r":1},{"id":"vr","t":"Vendor-risk","s":"pain: 147 screenshots|per vendor","k":"llm","c":1,"r":1},{"id":"kf","t":"Kafka","s":"","k":"queue","c":2,"r":1},{"id":"tg","t":"Task generator","s":"pain: an auditor week|per control","k":"llm","c":3,"r":1},{"id":"sb","t":"Script builder","s":"pain: scripts hand-|written per client","k":"llm","c":4,"r":1},{"id":"pt","t":"Pentest platform","s":"pain: capped by|analyst hours","k":"llm","c":0,"r":2},{"id":"hu","t":"Human reviewer","s":"ratifies every verdict","k":"human","c":2,"r":2},{"id":"q","t":"Cost + quota layer","s":"pacer, cache, tiers","k":"safe","c":4,"r":2}],"edges":[{"a":"ui","b":"ev","l":"","k":"flow","bi":false},{"a":"ui","b":"vr","l":"","k":"flow","bi":false},{"a":"co","b":"kf","l":"","k":"flow","bi":false},{"a":"kf","b":"vr","l":"","k":"flow","bi":false},{"a":"kf","b":"tg","l":"","k":"flow","bi":false},{"a":"kf","b":"sb","l":"","k":"flow","bi":false},{"a":"vr","b":"hu","l":"","k":"flow","bi":false},{"a":"tg","b":"hu","l":"","k":"flow","bi":false},{"a":"pt","b":"hu","l":"","k":"flow","bi":false},{"a":"q","b":"sb","l":"","k":"async","bi":false}]},"tg":{"nodes":[{"id":"up","t":"Upstream backend","s":"sends total_controls","k":"ext","c":0,"r":0},{"id":"rq","t":"request topic","s":"","k":"queue","c":1,"r":0},{"id":"gt","t":"Tenant gate","s":"per-tenant lock|wait for full batch","k":"code","c":2,"r":0},{"id":"qn","t":"Questioner","s":"19 scope patterns","k":"llm","c":3,"r":0},{"id":"hu","t":"Humans answer","s":"else stated default|+ flag","k":"human","c":4,"r":0},{"id":"rl","t":"Recovery loops","s":"resume, republish","k":"safe","c":3,"r":1},{"id":"bs","t":"Batch store","s":"checkpoints","k":"store","c":2,"r":1},{"id":"hr","t":"Human review","s":"after 2 failed cycles","k":"human","c":1,"r":1},{"id":"dr","t":"Decision record","s":"frozen, wins over defaults","k":"store","c":4,"r":1},{"id":"rv","t":"Review","s":"names failing agent","k":"llm","c":0,"r":2},{"id":"au","t":"Author","s":"","k":"llm","c":1,"r":2},{"id":"pn","t":"Plan","s":"multiplicity","k":"llm","c":2,"r":2},{"id":"sc","t":"Scope","s":"12 categories","k":"llm","c":3,"r":2},{"id":"cl","t":"Classify","s":"","k":"llm","c":4,"r":2}],"edges":[{"a":"up","b":"rq","l":"","k":"flow","bi":false},{"a":"rq","b":"gt","l":"","k":"flow","bi":false},{"a":"gt","b":"bs","l":"","k":"flow","bi":true},{"a":"gt","b":"qn","l":"batch complete","k":"flow","bi":false},{"a":"qn","b":"hu","l":"","k":"flow","bi":false},{"a":"hu","b":"dr","l":"freeze","k":"flow","bi":false},{"a":"dr","b":"cl","l":"read by all","k":"flow","bi":false},{"a":"cl","b":"sc","l":"","k":"flow","bi":false},{"a":"sc","b":"pn","l":"","k":"flow","bi":false},{"a":"pn","b":"au","l":"","k":"flow","bi":false},{"a":"au","b":"rv","l":"","k":"flow","bi":false},{"a":"rv","b":"sc","l":"reroute, cap 2","k":"loop","bi":false},{"a":"rv","b":"hr","l":"cap exceeded","k":"fail","bi":false},{"a":"rv","b":"up","l":"response","k":"flow","bi":false},{"a":"rl","b":"bs","l":"reads","k":"async","bi":false},{"a":"rl","b":"qn","l":"republish","k":"loop","bi":false}]},"ev":{"nodes":[{"id":"mt","t":"mapping-tasks","s":"","k":"queue","c":0,"r":0},{"id":"mc","t":"30 consumers","s":"manual commit|1 in flight","k":"code","c":1,"r":0},{"id":"ag","t":"Mapping agent","s":"4 tools, jailed to|tenant mirror","k":"llm","c":2,"r":0},{"id":"es","t":"Escalate once","s":"Opus 5","k":"llm","c":3,"r":0},{"id":"vl","t":"Read-before-claim","s":"one error, then drop","k":"safe","c":3,"r":1},{"id":"md","t":"mapping-tasks-dlq","s":"","k":"dlq","c":0,"r":1},{"id":"rt","t":"Retriable error","s":"not committed,|redelivered","k":"safe","c":1,"r":1},{"id":"mr","t":"mapping-results","s":"","k":"queue","c":4,"r":1},{"id":"pc","t":"AIMD pacer","s":"budget in quota units","k":"safe","c":2,"r":1},{"id":"fn","t":"Idempotent ingest","s":"content hash,|same hash: skip","k":"code","c":0,"r":2},{"id":"mi","t":"Tenant mirror","s":"immutable snapshot","k":"store","c":1,"r":2},{"id":"jl","t":"Path jail","s":"text fenced as|untrusted","k":"safe","c":2,"r":2},{"id":"f2","t":"Findings engine","s":"own Kafka cluster|+ own DLQ","k":"code","c":4,"r":2}],"edges":[{"a":"mt","b":"mc","l":"","k":"flow","bi":false},{"a":"mc","b":"ag","l":"","k":"flow","bi":false},{"a":"ag","b":"es","l":"nudge, then escalate","k":"fail","bi":false},{"a":"es","b":"vl","l":"","k":"flow","bi":false},{"a":"ag","b":"vl","l":"submit","k":"flow","bi":false},{"a":"vl","b":"mr","l":"result","k":"flow","bi":false},{"a":"mc","b":"md","l":"non-retriable","k":"fail","bi":false},{"a":"mc","b":"rt","l":"transient","k":"fail","bi":false},{"a":"rt","b":"mt","l":"redelivered","k":"loop","bi":false},{"a":"pc","b":"ag","l":"throttle feedback","k":"loop","bi":false},{"a":"fn","b":"mi","l":"","k":"flow","bi":false},{"a":"mi","b":"jl","l":"read-only","k":"async","bi":false},{"a":"jl","b":"ag","l":"","k":"async","bi":false},{"a":"f2","b":"mr","l":"isolated","k":"async","bi":false}]},"vr":{"nodes":[{"id":"api","t":"API","s":"Keycloak JWT","k":"code","c":0,"r":0},{"id":"dm","t":"Domain layer","s":"stdlib only,|cannot call a model","k":"code","c":1,"r":0},{"id":"pg","t":"Postgres 16","s":"state + outbox + inbox","k":"store","c":2,"r":0},{"id":"ob","t":"Outbox relay","s":"same transaction","k":"code","c":3,"r":0},{"id":"kf","t":"Kafka / Redpanda","s":"16 topics","k":"queue","c":4,"r":0},{"id":"up","t":"Upload 202","s":"","k":"code","c":0,"r":1},{"id":"uq","t":"Lease queue table","s":"120 s lease + token","k":"store","c":1,"r":1},{"id":"sp","t":"Supervised parser","s":"1800 s, 5,120 MB,|SIGKILL","k":"safe","c":2,"r":1},{"id":"wk","t":"6 workers","s":"inbox dedup, backoff","k":"code","c":3,"r":1},{"id":"dl","t":"DLQ","s":"","k":"dlq","c":4,"r":1},{"id":"hr","t":"Human reviewer","s":"ratifies verdicts","k":"human","c":0,"r":2},{"id":"td","t":"Tenant database","s":"registry fails closed","k":"store","c":1,"r":2},{"id":"gd","t":"5 guards + verifier","s":"citation must be proven","k":"safe","c":2,"r":2},{"id":"ev","t":"Evaluator","s":"structured output","k":"llm","c":3,"r":2},{"id":"ds","t":"Discovery agent","s":"answer-blind","k":"llm","c":4,"r":2}],"edges":[{"a":"api","b":"dm","l":"","k":"flow","bi":false},{"a":"dm","b":"pg","l":"","k":"flow","bi":false},{"a":"pg","b":"ob","l":"same txn","k":"flow","bi":false},{"a":"ob","b":"kf","l":"","k":"flow","bi":false},{"a":"kf","b":"wk","l":"","k":"flow","bi":false},{"a":"wk","b":"dl","l":"exhausted","k":"fail","bi":false},{"a":"up","b":"uq","l":"","k":"flow","bi":false},{"a":"uq","b":"sp","l":"lease","k":"flow","bi":false},{"a":"sp","b":"uq","l":"killed: retry","k":"fail","bi":false},{"a":"wk","b":"ds","l":"run job","k":"flow","bi":false},{"a":"ds","b":"ev","l":"","k":"flow","bi":false},{"a":"ev","b":"gd","l":"","k":"flow","bi":false},{"a":"gd","b":"td","l":"","k":"flow","bi":false},{"a":"td","b":"hr","l":"draft answers","k":"flow","bi":false},{"a":"gd","b":"ev","l":"no proof: flag","k":"fail","bi":false}]},"sb":{"nodes":[{"id":"gq","t":"generation topic","s":"","k":"queue","c":0,"r":0},{"id":"tr","t":"Translator","s":"per tech, control,|standard","k":"code","c":1,"r":0},{"id":"ca","t":"Research cache","s":"written after gates","k":"store","c":2,"r":0},{"id":"ra","t":"Research agent","s":"12-call budget","k":"llm","c":3,"r":0},{"id":"rg","t":"Research gates","s":"confidence >= 0.8","k":"safe","c":4,"r":0},{"id":"pz","t":"Poison message","s":"committed past","k":"safe","c":0,"r":1},{"id":"sk","t":"Skipped task","s":"never fabricated","k":"safe","c":1,"r":1},{"id":"tg","t":"Test gate","s":"mocks only","k":"safe","c":2,"r":1},{"id":"vl","t":"Validate","s":"AST + allowlist","k":"safe","c":3,"r":1},{"id":"cg","t":"Codegen agent","s":"no tools","k":"llm","c":4,"r":1},{"id":"bd","t":"results-failure","s":"","k":"dlq","c":0,"r":2},{"id":"ok","t":"results-success","s":"","k":"queue","c":1,"r":2},{"id":"ex","t":"Execute","s":"nonce result","k":"safe","c":2,"r":2},{"id":"rp","t":"Repair loop","s":"budget 2","k":"safe","c":3,"r":2},{"id":"lb","t":"Library","s":"replay: 0 model calls","k":"store","c":4,"r":2}],"edges":[{"a":"gq","b":"tr","l":"","k":"flow","bi":false},{"a":"gq","b":"pz","l":"malformed","k":"fail","bi":false},{"a":"tr","b":"sk","l":"unbuildable","k":"fail","bi":false},{"a":"tr","b":"ca","l":"","k":"flow","bi":false},{"a":"ca","b":"ra","l":"miss","k":"flow","bi":false},{"a":"ca","b":"cg","l":"hit","k":"async","bi":false},{"a":"ra","b":"rg","l":"","k":"flow","bi":false},{"a":"rg","b":"ra","l":"retry","k":"loop","bi":false},{"a":"rg","b":"cg","l":"","k":"flow","bi":false},{"a":"cg","b":"vl","l":"","k":"flow","bi":false},{"a":"vl","b":"tg","l":"","k":"flow","bi":false},{"a":"tg","b":"ex","l":"","k":"flow","bi":false},{"a":"vl","b":"rp","l":"fail","k":"fail","bi":false},{"a":"ex","b":"rp","l":"fail","k":"fail","bi":false},{"a":"rp","b":"cg","l":"repair","k":"loop","bi":false},{"a":"ex","b":"ok","l":"","k":"flow","bi":false},{"a":"ex","b":"bd","l":"failure","k":"fail","bi":false},{"a":"ex","b":"lb","l":"publish","k":"flow","bi":false}]},"pt":{"nodes":[{"id":"api","t":"Service API","s":"idempotent, frozen","k":"code","c":0,"r":0},{"id":"db","t":"Postgres","s":"job + outbox: 1 txn","k":"store","c":1,"r":0},{"id":"wk","t":"Lease worker","s":"heartbeat, fencing","k":"code","c":2,"r":0},{"id":"sp","t":"Own process","s":"supervised","k":"safe","c":3,"r":0},{"id":"cn","t":"Cancel checks","s":"launch, run, publish","k":"safe","c":4,"r":0},{"id":"hk","t":"Hook + scope gate","s":"blocks ad hoc reads","k":"safe","c":0,"r":1},{"id":"sa","t":"9 sub-agents","s":"read-only","k":"llm","c":1,"r":1},{"id":"or","t":"Orchestrator","s":"10 phases","k":"llm","c":2,"r":1},{"id":"rn","t":"Runner","s":"one runtime","k":"code","c":3,"r":1},{"id":"va","t":"Validator agent","s":"cannot mutate","k":"llm","c":4,"r":1},{"id":"mv","t":"Testing portal","s":"findings, SLA, retest","k":"code","c":0,"r":2},{"id":"pl","t":"Polling","s":"correctness path","k":"safe","c":1,"r":2},{"id":"ob","t":"Callback outbox","s":"signed, durable","k":"code","c":2,"r":2},{"id":"cs","t":"Compare-and-swap","s":"stale worker loses","k":"safe","c":3,"r":2},{"id":"sr","t":"Specialist review","s":"confirm or retract","k":"human","c":4,"r":2}],"edges":[{"a":"api","b":"db","l":"","k":"flow","bi":false},{"a":"db","b":"wk","l":"lease","k":"flow","bi":false},{"a":"sp","b":"wk","l":"","k":"async","bi":false},{"a":"cn","b":"wk","l":"","k":"async","bi":false},{"a":"wk","b":"rn","l":"","k":"flow","bi":false},{"a":"rn","b":"or","l":"","k":"flow","bi":false},{"a":"or","b":"sa","l":"","k":"flow","bi":false},{"a":"hk","b":"sa","l":"blocks","k":"fail","bi":false},{"a":"or","b":"va","l":"","k":"flow","bi":false},{"a":"va","b":"or","l":"retract / keep","k":"loop","bi":false},{"a":"va","b":"sr","l":"","k":"flow","bi":false},{"a":"sr","b":"cs","l":"","k":"flow","bi":false},{"a":"cs","b":"ob","l":"","k":"flow","bi":false},{"a":"ob","b":"mv","l":"callback","k":"flow","bi":false},{"a":"ob","b":"pl","l":"lost callback","k":"fail","bi":false},{"a":"pl","b":"mv","l":"","k":"loop","bi":false},{"a":"cs","b":"db","l":"lost race","k":"fail","bi":false}]},"bad":{"nodes":[{"id":"mo","t":"Model output","s":"verdict + citations","k":"llm","c":0,"r":0},{"id":"vf","t":"Citation verifier","s":"verbatim, or >= 0.8|token overlap","k":"safe","c":1,"r":0},{"id":"gd","t":"5 guards","s":"recency, N/A, calibration","k":"safe","c":2,"r":0},{"id":"rv","t":"Reviewer agent","s":"names failing check","k":"llm","c":3,"r":0},{"id":"hu","t":"Human ratifies","s":"nothing auto-approves","k":"human","c":4,"r":0},{"id":"es","t":"Nudge, escalate","s":"or ERROR, never a guess","k":"safe","c":0,"r":1},{"id":"fl","t":"Flagged unproven","s":"not shown as proven","k":"safe","c":1,"r":1},{"id":"lg","t":"Audit trail","s":"every read recorded","k":"store","c":2,"r":1},{"id":"cp","t":"Cap: 2 cycles","s":"then human review","k":"safe","c":3,"r":1}],"edges":[{"a":"mo","b":"vf","l":"","k":"flow","bi":false},{"a":"vf","b":"gd","l":"","k":"flow","bi":false},{"a":"gd","b":"rv","l":"","k":"flow","bi":false},{"a":"rv","b":"hu","l":"","k":"flow","bi":false},{"a":"mo","b":"es","l":"no submit","k":"fail","bi":false},{"a":"es","b":"vf","l":"retry","k":"loop","bi":false},{"a":"vf","b":"fl","l":"no proof","k":"fail","bi":false},{"a":"gd","b":"lg","l":"","k":"async","bi":false},{"a":"rv","b":"gd","l":"reroute","k":"loop","bi":false},{"a":"rv","b":"cp","l":"cap hit","k":"fail","bi":false},{"a":"cp","b":"hu","l":"human review","k":"flow","bi":false}]},"pat":{"nodes":[{"id":"tp","t":"topic","s":"","k":"queue","c":0,"r":0},{"id":"cs","t":"Consumer","s":"manual commit,|1 in flight","k":"code","c":1,"r":0},{"id":"hd","t":"Handle","s":"idempotent,|deterministic ids","k":"code","c":2,"r":0},{"id":"cm","t":"Commit","s":"after handling","k":"store","c":3,"r":0},{"id":"ib","t":"Inbox table","s":"dedup by message id","k":"store","c":4,"r":0},{"id":"rt","t":"Retriable","s":"not committed,|redelivered","k":"safe","c":0,"r":1},{"id":"dq","t":"DLQ","s":"poison / exhausted","k":"dlq","c":2,"r":1},{"id":"ob","t":"Outbox relay","s":"event in the same|transaction, then topic","k":"code","c":3,"r":1},{"id":"pg","t":"Postgres","s":"state + outbox","k":"store","c":4,"r":1},{"id":"ls","t":"Lease queue table","s":"lease + token","k":"store","c":0,"r":2},{"id":"wk","t":"Worker","s":"heartbeat, fencing","k":"code","c":1,"r":2},{"id":"cw","t":"Compare-and-swap","s":"stale writer loses","k":"safe","c":2,"r":2},{"id":"sp","t":"Supervised child","s":"real limits, SIGKILL","k":"safe","c":3,"r":2},{"id":"rp","t":"Reaper","s":"requeue stuck runs","k":"safe","c":4,"r":2}],"edges":[{"a":"tp","b":"cs","l":"","k":"flow","bi":false},{"a":"cs","b":"hd","l":"","k":"flow","bi":false},{"a":"hd","b":"cm","l":"","k":"flow","bi":false},{"a":"hd","b":"ib","l":"dedup","k":"async","bi":false},{"a":"cs","b":"rt","l":"transient","k":"fail","bi":false},{"a":"rt","b":"tp","l":"redelivered","k":"loop","bi":false},{"a":"hd","b":"dq","l":"non-retriable","k":"fail","bi":false},{"a":"hd","b":"pg","l":"state change","k":"flow","bi":false},{"a":"pg","b":"ob","l":"same txn","k":"flow","bi":false},{"a":"ls","b":"wk","l":"lease","k":"flow","bi":false},{"a":"wk","b":"cw","l":"publish","k":"flow","bi":false},{"a":"wk","b":"sp","l":"","k":"async","bi":false},{"a":"rp","b":"ls","l":"requeue","k":"loop","bi":false}]}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const slides = $$('.slide'), stage = $('#stage'), segs = $('#segs'), nt = $('#nt'), notes = $('#notes');
+  const HAS = typeof anime === 'function', RM = matchMedia('(prefers-reduced-motion: reduce)').matches, ANIM = HAS && !RM;
+  const TARGET = 600;
+  let cur = 0, started = 0, timerOn = true;
+  const fmt = (v, d = 0, pre = '', suf = '') => pre + Number(v).toLocaleString('en-US', {minimumFractionDigits: d, maximumFractionDigits: d}) + suf;
+  const fit = () => { const s = Math.min(innerWidth / 1280, (innerHeight - 40) / 720); stage.style.transform = `translate(-50%,-50%) scale(${s})`; };
+  addEventListener('resize', fit); fit();
+  const ARCH = new Set([4, 5, 6, 7, 8, 9, 10, 11]);
+  slides.forEach((_, i) => { const b = document.createElement('button'); b.setAttribute('aria-label', 'Slide ' + (i + 1)); if (ARCH.has(i)) b.classList.add('arch'); b.addEventListener('click', () => go(i)); segs.appendChild(b); });
+
+  /* ---------- diagrams: grid layout + A* orthogonal routing ---------- */
+  const data = JSON.parse($('#dg-data').textContent);
+  const NS = 'http://www.w3.org/2000/svg';
+  const mk = (n, a = {}, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+  const CW = 205, RH = 118, MX = 18, MY = 22, S = 8, CH = 7.3, SW = 6.3;
+  const size = n => { const lines = n.s ? n.s.split('|') : []; const w = Math.max(n.t.length * CH, ...lines.map(l => l.length * SW)) + 26; return {w: Math.min(Math.max(w, 96), CW - 24), h: 26 + lines.length * 14 + (lines.length ? 2 : 0)}; };
+  const rounded = (pts, r = 8) => { let d = `M${pts[0].x} ${pts[0].y}`; for (let i = 1; i < pts.length - 1; i++) { const p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1]; const l1 = Math.hypot(p1.x - p0.x, p1.y - p0.y), l2 = Math.hypot(p2.x - p1.x, p2.y - p1.y), rr = Math.min(r, l1 / 2, l2 / 2); d += ` L${p1.x - (p1.x - p0.x) / l1 * rr} ${p1.y - (p1.y - p0.y) / l1 * rr} Q${p1.x} ${p1.y} ${p1.x + (p2.x - p1.x) / l2 * rr} ${p1.y + (p2.y - p1.y) / l2 * rr}`; } const e = pts[pts.length - 1]; return d + ` L${e.x} ${e.y}`; };
+  class Heap { constructor() { this.a = []; } push(v) { const a = this.a; a.push(v); let i = a.length - 1; while (i > 0) { const p = (i - 1) >> 1; if (a[p][0] <= a[i][0]) break; [a[p], a[i]] = [a[i], a[p]]; i = p; } } pop() { const a = this.a, top = a[0], last = a.pop(); if (a.length) { a[0] = last; let i = 0; for (;;) { let l = 2 * i + 1, r = l + 1, m = i; if (l < a.length && a[l][0] < a[m][0]) m = l; if (r < a.length && a[r][0] < a[m][0]) m = r; if (m === i) break; [a[m], a[i]] = [a[i], a[m]]; i = m; } } return top; } get size() { return this.a.length; } }
+  const DX = [1, -1, 0, 0], DY = [0, 0, 1, -1];
+  const layout = d => {
+    const nodes = d.nodes.map(n => ({...n, ...size(n)}));
+    const cols = Math.max(...nodes.map(n => n.c)) + 1, rows = Math.max(...nodes.map(n => n.r)) + 1;
+    const W = MX * 2 + cols * CW, H = MY + rows * RH;
+    nodes.forEach(n => { n.x = MX + n.c * CW + (CW - n.w) / 2; n.y = MY + n.r * RH + 26 + (60 - n.h) / 2; });
+    const by = Object.fromEntries(nodes.map(n => [n.id, n]));
+    const gw = Math.ceil(W / S), gh = Math.ceil(H / S), blocked = new Uint8Array(gw * gh), uH = new Uint8Array(gw * gh), uV = new Uint8Array(gw * gh);
+    nodes.forEach(n => { for (let y = Math.max(0, Math.floor((n.y - 5) / S)); y <= Math.min(gh - 1, Math.floor((n.y + n.h + 5) / S)); y++) for (let x = Math.max(0, Math.floor((n.x - 5) / S)); x <= Math.min(gw - 1, Math.floor((n.x + n.w + 5) / S)); x++) blocked[y * gw + x] = 1; });
+    const slots = {};
+    const sx = v => Math.round((v - S / 2) / S) * S + S / 2;
+    const anchorFor = (n, side) => { const k = n.id + side, c = slots[k] = (slots[k] || 0) + 1, off = [0, 14, -14, 28, -28, 40, -40][c - 1] || 0, half = (side === 't' || side === 'b' ? n.w : n.h) / 2 - 8, o = Math.max(-half, Math.min(half, off));
+      if (side === 't') return {x: sx(n.x + n.w / 2 + o), y: n.y, nx: 0, ny: -1}; if (side === 'b') return {x: sx(n.x + n.w / 2 + o), y: n.y + n.h, nx: 0, ny: 1};
+      if (side === 'l') return {x: n.x, y: sx(n.y + n.h / 2 + o), nx: -1, ny: 0}; return {x: n.x + n.w, y: sx(n.y + n.h / 2 + o), nx: 1, ny: 0}; };
+    const cellOf = (x, y) => ({x: Math.max(0, Math.min(gw - 1, Math.floor(x / S))), y: Math.max(0, Math.min(gh - 1, Math.floor(y / S)))});
+    const route = (A, B) => {
+      const s = cellOf(A.x + A.nx * 12, A.y + A.ny * 12), t = cellOf(B.x + B.nx * 12, B.y + B.ny * 12), sd = A.nx === 1 ? 0 : A.nx === -1 ? 1 : A.ny === 1 ? 2 : 3;
+      const dist = new Map(), prev = new Map(), heap = new Heap(), key = (x, y, dr) => ((y * gw + x) << 2) | dr, h = (x, y) => Math.abs(x - t.x) + Math.abs(y - t.y);
+      dist.set(key(s.x, s.y, sd), 0); heap.push([h(s.x, s.y), 0, s.x, s.y, sd]); let goal = null, guard = 0;
+      while (heap.size && guard++ < 120000) { const [, g, x, y, dr] = heap.pop(); if (dist.get(key(x, y, dr)) < g) continue; if (x === t.x && y === t.y) { goal = key(x, y, dr); break; }
+        for (let nd = 0; nd < 4; nd++) { if ((dr ^ 1) === nd) continue; const nx = x + DX[nd], ny = y + DY[nd]; if (nx < 0 || ny < 0 || nx >= gw || ny >= gh) continue; const ci = ny * gw + nx; if (blocked[ci] && !(nx === t.x && ny === t.y)) continue;
+          let c = 1 + (nd !== dr ? 5 : 0); if (nd < 2) { if (uH[ci]) c += 6; if (uV[ci]) c += 1.5; } else { if (uV[ci]) c += 6; if (uH[ci]) c += 1.5; }
+          const ng = g + c, kk = key(nx, ny, nd); if (!dist.has(kk) || dist.get(kk) > ng) { dist.set(kk, ng); prev.set(kk, key(x, y, dr)); heap.push([ng + h(nx, ny), ng, nx, ny, nd]); } } }
+      if (goal === null) return null; const cells = []; let k = goal; while (k !== undefined) { const dr = k & 3, idx = k >> 2; cells.push({x: idx % gw, y: (idx / gw) | 0, dr}); k = prev.get(k); } cells.reverse();
+      cells.forEach((c, i) => { const ci = c.y * gw + c.x; if (i && cells[i - 1].dr < 2) uH[ci] = 1; else if (i) uV[ci] = 1; });
+      return cells.map(c => ({x: c.x * S + S / 2, y: c.y * S + S / 2})); };
+    const compress = pts => { const out = [pts[0]]; for (let i = 1; i < pts.length - 1; i++) { const a = out[out.length - 1], b = pts[i], c = pts[i + 1]; if ((a.x === b.x && b.x === c.x) || (a.y === b.y && b.y === c.y)) continue; out.push(b); } out.push(pts[pts.length - 1]); return out; };
+    const edges = d.edges.map(e => { const a = by[e.a], b = by[e.b]; if (!a || !b) return null;
+      const dx = (b.x + b.w / 2 - a.x - a.w / 2) / CW, dy = (b.y + b.h / 2 - a.y - a.h / 2) / RH, horiz = Math.abs(dx) > 0 && (Math.abs(dy) < 0.5 || Math.abs(dx) > 1.6 * Math.abs(dy));
+      const sa = horiz ? (dx > 0 ? 'r' : 'l') : (dy > 0 ? 'b' : 't'), sb = horiz ? (dx > 0 ? 'l' : 'r') : (dy > 0 ? 't' : 'b'), A = anchorFor(a, sa), B = anchorFor(b, sb), cells = route(A, B);
+      const pts = cells ? compress([{x: A.x, y: A.y}, ...cells, {x: B.x, y: B.y}]) : [{x: A.x, y: A.y}, {x: B.x, y: B.y}];
+      let best = 0, li = 1; for (let i = 1; i < pts.length; i++) { const l = Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y); if (l > best) { best = l; li = i; } }
+      const lp = {x: (pts[li].x + pts[li - 1].x) / 2, y: (pts[li].y + pts[li - 1].y) / 2}, vert = pts[li].x === pts[li - 1].x;
+      return {...e, pts, lp, showLabel: !!e.l && best >= (vert ? 22 : e.l.length * 6.3 + 16)}; }).filter(Boolean);
+    return {nodes, edges, W, H}; };
+  const drawn = new WeakSet();
+  const draw = box => {
+    if (drawn.has(box)) return; drawn.add(box);
+    const pid = box.dataset.d, L = layout(data[pid]), W = L.W, H = L.H; box.innerHTML = '';
+    const svg = mk('svg', {viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'xMidYMid meet', role: 'img', 'aria-label': 'Architecture diagram'}, box);
+    const defs = mk('defs', {}, svg);
+    ['flow', 'fail', 'loop', 'async'].forEach(k => { const m = mk('marker', {id: `mk-${pid}-${k}`, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse'}, defs); mk('path', {d: 'M0 0 L10 5 L0 10 z', class: 'mk-' + k}, m); });
+    const eG = mk('g', {}, svg), nG = mk('g', {}, svg), pG = mk('g', {}, svg), edgeEls = [], nodeEls = [];
+    L.edges.forEach(e => { const g = mk('g', {class: `ed e-${e.k}`, 'data-a': e.a, 'data-b': e.b}, eG); const path = mk('path', {d: rounded(e.pts), 'marker-end': `url(#mk-${pid}-${e.k})`}, g); if (e.bi) path.setAttribute('marker-start', `url(#mk-${pid}-${e.k})`);
+      if (e.showLabel) { const t = mk('text', {x: e.lp.x, y: e.lp.y + 3.5, 'text-anchor': 'middle', class: 'el'}, g); t.textContent = e.l; } edgeEls.push(g);
+      if (e.k !== 'async') { let len = 0; for (let j = 1; j < e.pts.length; j++) len += Math.hypot(e.pts[j].x - e.pts[j - 1].x, e.pts[j].y - e.pts[j - 1].y); const dur = Math.max(2.4, len / (e.k === 'flow' ? 80 : 55)); const c = mk('circle', {r: 3.6, class: 'pkt k-' + e.k}, pG); mk('animateMotion', {dur: dur + 's', repeatCount: 'indefinite', begin: '-' + (Math.random() * dur).toFixed(2) + 's', path: 'M' + e.pts.map(p => `${p.x} ${p.y}`).join(' L')}, c); } });
+    L.nodes.forEach(n => { const g = mk('g', {class: `nd k-${n.k}`, 'data-id': n.id}, nG); mk('rect', {x: n.x, y: n.y, width: n.w, height: n.h, rx: n.k === 'queue' || n.k === 'dlq' ? n.h / 2 : 2}, g);
+      if (n.k === 'store') mk('line', {x1: n.x, x2: n.x + n.w, y1: n.y + 7, y2: n.y + 7, stroke: 'var(--ink)', 'stroke-width': 1, opacity: .45}, g);
+      const lines = n.s ? n.s.split('|') : [], y0 = n.y + (lines.length ? 18 : n.h / 2 + 4); const t1 = mk('text', {x: n.x + n.w / 2, y: y0, 'text-anchor': 'middle', class: 't1'}, g); t1.textContent = n.t;
+      lines.forEach((l, i) => { const t2 = mk('text', {x: n.x + n.w / 2, y: y0 + 14 + i * 13, 'text-anchor': 'middle', class: 't2'}, g); t2.textContent = l; }); nodeEls.push(g);
+      const on = () => { box.classList.add('hl'); const ids = new Set([n.id]); edgeEls.forEach(x => { const hit = x.dataset.a === n.id || x.dataset.b === n.id; x.classList.toggle('on', hit); if (hit) { ids.add(x.dataset.a); ids.add(x.dataset.b); } }); nodeEls.forEach(x => x.classList.toggle('on', ids.has(x.dataset.id))); };
+      const off = () => { box.classList.remove('hl'); [...nodeEls, ...edgeEls].forEach(x => x.classList.remove('on')); }; g.addEventListener('mouseenter', on); g.addEventListener('mouseleave', off); });
+    if (ANIM) { anime({targets: nodeEls, opacity: [0, 1], translateY: [10, 0], delay: anime.stagger(30), duration: 600, easing: 'easeOutCubic', complete: () => nodeEls.forEach(x => x.removeAttribute('style'))});
+      anime({targets: edgeEls, opacity: [0, 1], delay: 450, duration: 900, easing: 'linear', complete: () => edgeEls.forEach(x => x.removeAttribute('style'))}); } };
+
+  const enter = s => {
+    $$('.dg[data-d]', s).forEach(draw);
+    if (!ANIM) return;
+    const items = $$('[data-a]', s); anime.set(items, {opacity: 0, translateY: 18}); anime({targets: items, opacity: 1, translateY: 0, delay: anime.stagger(60), duration: 600, easing: 'easeOutCubic'});
+    $$('[data-to]', s).forEach(el => { const from = +(el.dataset.from ?? 0), to = +el.dataset.to, d = +(el.dataset.dec || 0), pre = el.dataset.pre || '', suf = el.dataset.suf || '', o = {v: from}; el.textContent = fmt(from, d, pre, suf);
+      anime({targets: o, v: to, duration: 1500, delay: 350, easing: 'easeOutExpo', update: () => { el.textContent = fmt(o.v, d, pre, suf); }}); });
+    $$('.gb, .mf[data-w]', s).forEach((g, i) => { const w = g.dataset.w + '%'; g.style.width = '0%'; anime({targets: g, width: w, duration: 1200, delay: 500 + i * 120, easing: 'easeOutExpo'}); }); };
+  const go = i => {
+    i = Math.max(0, Math.min(slides.length - 1, i)); if (!started && i > 0) started = Date.now();
+    slides.forEach((s, k) => s.classList.toggle('on', k === i)); cur = i; enter(slides[i]);
+    $$('button', segs).forEach((b, k) => { b.classList.toggle('done', k < i); b.classList.toggle('cur', k === i); });
+    $('#cnt').textContent = `${i + 1} / ${slides.length}`; nt.textContent = slides[i].dataset.note || '';
+    try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {} };
+  addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); go(cur + 1); } else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+    else if (e.key === 'Home') go(0); else if (e.key === 'End') go(slides.length - 1); else if (e.key === 'n' || e.key === 'N') notes.classList.toggle('on');
+    else if (e.key === 't' || e.key === 'T') { timerOn = !timerOn; $('#time').style.visibility = timerOn ? 'visible' : 'hidden'; } else if (e.key === 'r' || e.key === 'R') { started = 0; }
+    else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(() => {}); } });
+  let x0 = null; addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, {passive: true});
+  addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1)); x0 = null; }, {passive: true});
+  stage.addEventListener('click', e => { if (e.target.closest('a,button,.nd')) return; const r = stage.getBoundingClientRect(); go(cur + (e.clientX - r.left > r.width * .3 ? 1 : -1)); });
+  setInterval(() => { const el = $('#time'); if (!started) { el.textContent = '0:00 / 10:00'; return; } const t = Math.floor((Date.now() - started) / 1000); el.textContent = `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')} / 10:00`; el.className = t > TARGET ? 'over' : ''; }, 500);
+  const h = parseInt((location.hash || '').slice(1), 10); go(Number.isFinite(h) && h >= 1 && h <= slides.length ? h - 1 : 0);
+})();
+</script>
+</body>
+</html>
